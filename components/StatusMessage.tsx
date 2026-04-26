@@ -17,7 +17,7 @@ const toneClasses: Record<StatusTone, string> = {
 // Compact feedback block for validation, browser support, and cart status.
 export function StatusMessage({ children, tone = "info" }: StatusMessageProps) {
   return (
-    <div className={`rounded-lg border px-4 py-3 text-sm leading-6 ${toneClasses[tone]}`}>
+    <div className={`rounded-2xl border px-4 py-3 text-sm leading-6 ${toneClasses[tone]}`}>
       {children}
     </div>
   );

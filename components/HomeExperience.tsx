@@ -13,10 +13,44 @@ import { VoiceInput } from "./VoiceInput";
 
 type HomeStatus = "idle" | "processing" | "error";
 
+const infoCards = [
+  {
+    title: "Rozpoznání",
+    description: "Nadiktovaný nebo napsaný text se převede na strukturovaný seznam.",
+  },
+  {
+    title: "Demo košík",
+    description: "Zobrazíme, jak by košík vypadal po rozpoznání položek.",
+  },
+  {
+    title: "Bez objednávky",
+    description: "Toto je demo. Aplikace nevytváří skutečné objednávky.",
+  },
+];
+
 function waitForDemoProcessing() {
   return new Promise((resolve) => {
     window.setTimeout(resolve, 450);
   });
+}
+
+function HomeInfoCards() {
+  return (
+    <div className="mx-auto mt-4 grid max-w-3xl gap-2 sm:mt-6 sm:grid-cols-3 sm:gap-3">
+      {infoCards.map((card) => (
+        <article
+          key={card.title}
+          className="rounded-2xl border border-zinc-200 bg-white px-3 py-2.5 text-left shadow-sm sm:px-4 sm:py-3"
+        >
+          <div className="mb-1.5 flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            <h2 className="text-sm font-semibold text-zinc-950">{card.title}</h2>
+          </div>
+          <p className="text-xs leading-5 text-zinc-600">{card.description}</p>
+        </article>
+      ))}
+    </div>
+  );
 }
 
 // Client composition for the home page voice-to-cart demo.
@@ -74,39 +108,36 @@ export function HomeExperience() {
           isProcessing={status === "processing"}
           onSubmit={handleInputSubmit}
         />
+        <HomeInfoCards />
       </Hero>
 
-      <section className="mx-auto max-w-6xl px-4 pb-12 sm:px-6 lg:px-8">
-        <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-5">
-            {errorMessage ? <StatusMessage tone="error">{errorMessage}</StatusMessage> : null}
-            {parsedRequest ? (
-              <GroceryList parsedRequest={parsedRequest} />
-            ) : (
-              <StatusMessage tone="info">
-                Nadiktovaný nebo napsaný text se zobrazí tady spolu se strukturovaným nákupním seznamem.
+      {errorMessage || parsedRequest ? (
+        <section className="mx-auto max-w-6xl px-4 pb-12 sm:px-6 lg:px-8">
+          <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="space-y-5">
+              {errorMessage ? <StatusMessage tone="error">{errorMessage}</StatusMessage> : null}
+              {parsedRequest ? <GroceryList parsedRequest={parsedRequest} /> : null}
+            </div>
+            <div className="space-y-5">
+              {cartItems.length > 0 ? (
+                <CartPreview
+                  cartResult={cartResult}
+                  isPreparing={isPreparingCart}
+                  items={cartItems}
+                  onPrepareCart={handlePrepareCart}
+                />
+              ) : (
+                <div className="rounded-lg border border-dashed border-zinc-300 bg-white p-5 text-sm leading-6 text-zinc-600">
+                  Náhled demo košíku se objeví po rozpoznání položek.
+                </div>
+              )}
+              <StatusMessage tone="warning">
+                Toto je demo. Aplikace nevytváří skutečné objednávky a neukládá přihlašovací údaje k Rohlíku.
               </StatusMessage>
-            )}
+            </div>
           </div>
-          <div className="space-y-5">
-            {cartItems.length > 0 ? (
-              <CartPreview
-                cartResult={cartResult}
-                isPreparing={isPreparingCart}
-                items={cartItems}
-                onPrepareCart={handlePrepareCart}
-              />
-            ) : (
-              <div className="rounded-lg border border-dashed border-zinc-300 bg-white p-5 text-sm leading-6 text-zinc-600">
-                Náhled demo košíku se objeví po rozpoznání položek.
-              </div>
-            )}
-            <StatusMessage tone="warning">
-              Toto je demo. Aplikace nevytváří skutečné objednávky a neukládá přihlašovací údaje k Rohlíku.
-            </StatusMessage>
-          </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
     </>
   );
 }

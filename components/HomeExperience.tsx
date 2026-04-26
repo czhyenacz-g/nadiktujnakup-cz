@@ -100,12 +100,22 @@ export function HomeExperience() {
     }
   }
 
+  function handleInputReset() {
+    setStatus("idle");
+    setErrorMessage(null);
+    setParsedRequest(null);
+    setCartItems([]);
+    setCartResult(null);
+    setIsPreparingCart(false);
+  }
+
   return (
     <>
       <Hero>
         <VoiceInput
           hasError={status === "error"}
           isProcessing={status === "processing"}
+          onReset={handleInputReset}
           onSubmit={handleInputSubmit}
         />
         <HomeInfoCards />

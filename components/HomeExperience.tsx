@@ -36,17 +36,17 @@ function waitForDemoProcessing() {
 
 function HomeInfoCards() {
   return (
-    <div className="mx-auto mt-4 grid max-w-3xl gap-2 sm:mt-6 sm:grid-cols-3 sm:gap-3">
+    <div className="mx-auto mt-3 grid max-w-3xl gap-2 sm:mt-6 sm:grid-cols-3 sm:gap-3">
       {infoCards.map((card) => (
         <article
           key={card.title}
-          className="rounded-2xl border border-zinc-200 bg-white px-3 py-2.5 text-left shadow-sm sm:px-4 sm:py-3"
+          className="rounded-2xl border border-zinc-200 bg-white px-3 py-2 text-left shadow-sm sm:px-4 sm:py-3"
         >
-          <div className="mb-1.5 flex items-center gap-2">
+          <div className="mb-1 flex items-center gap-2 sm:mb-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500" />
             <h2 className="text-sm font-semibold text-zinc-950">{card.title}</h2>
           </div>
-          <p className="text-xs leading-5 text-zinc-600">{card.description}</p>
+          <p className="text-xs leading-4 text-zinc-600 sm:leading-5">{card.description}</p>
         </article>
       ))}
     </div>
@@ -122,7 +122,7 @@ export function HomeExperience() {
       </Hero>
 
       {errorMessage || parsedRequest ? (
-        <section className="mx-auto max-w-6xl px-4 pb-12 sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-6xl px-4 pb-12 pt-2 sm:px-6 sm:pt-0 lg:px-8">
           <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="space-y-5">
               {errorMessage ? <StatusMessage tone="error">{errorMessage}</StatusMessage> : null}

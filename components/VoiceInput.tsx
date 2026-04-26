@@ -27,7 +27,7 @@ function MicrophoneIcon() {
   return (
     <svg
       aria-hidden="true"
-      className="h-16 w-16 sm:h-20 sm:w-20"
+      className="h-14 w-14 sm:h-20 sm:w-20"
       fill="none"
       stroke="currentColor"
       strokeLinecap="round"
@@ -76,6 +76,7 @@ interface ReviewCardProps {
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   onTextChange: (value: string) => void;
   placeholder: string;
+  recordAgainLabel: string;
   showRecordAgain: boolean;
   statusState: VisibleState;
   text: string;
@@ -90,6 +91,7 @@ function ReviewCard({
   onSubmit,
   onTextChange,
   placeholder,
+  recordAgainLabel,
   showRecordAgain,
   statusState,
   text,
@@ -100,12 +102,12 @@ function ReviewCard({
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-auto min-h-[21rem] w-full max-w-xl rounded-[2rem] border border-zinc-200 bg-white p-4 text-left shadow-[0_24px_80px_rgba(15,23,42,0.10)] transition sm:min-h-[22rem] sm:p-5"
+      className="mx-auto min-h-[18.75rem] w-full max-w-xl rounded-[1.5rem] border border-zinc-200 bg-white p-3.5 text-left shadow-[0_24px_80px_rgba(15,23,42,0.10)] transition sm:min-h-[22rem] sm:rounded-[2rem] sm:p-5"
     >
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-zinc-950">{title}</h2>
-          <p className="mt-1 text-sm leading-6 text-zinc-600">{helper}</p>
+          <h2 className="text-lg font-semibold text-zinc-950 sm:text-xl">{title}</h2>
+          <p className="mt-1 text-sm leading-5 text-zinc-600 sm:leading-6">{helper}</p>
         </div>
         <StatusPill state={statusState} />
       </div>
@@ -120,7 +122,7 @@ function ReviewCard({
         disabled={isProcessing}
         maxLength={MAX_INPUT_LENGTH}
         rows={5}
-        className="mt-4 h-32 w-full resize-none rounded-2xl border border-zinc-300 bg-zinc-50 px-4 py-3 text-sm leading-6 text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100 disabled:cursor-not-allowed disabled:opacity-70 sm:h-36"
+        className="mt-3 h-28 w-full resize-none rounded-2xl border border-zinc-300 bg-zinc-50 px-4 py-3 text-sm leading-6 text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-100 disabled:cursor-not-allowed disabled:opacity-70 sm:mt-4 sm:h-36"
         placeholder={placeholder}
       />
       <div className="mt-2 flex items-center justify-between gap-3 text-xs text-zinc-500">
@@ -134,7 +136,7 @@ function ReviewCard({
         <button
           type="submit"
           disabled={!trimmedText || isProcessing}
-          className="rounded-2xl bg-zinc-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-45"
+          className="min-h-11 rounded-2xl bg-zinc-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-45"
         >
           {isProcessing ? "Zpracovávám..." : "Zpracovat nákup"}
         </button>
@@ -143,9 +145,9 @@ function ReviewCard({
             type="button"
             onClick={onRecordAgain}
             disabled={isProcessing}
-            className="rounded-2xl border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
+            className="min-h-11 rounded-2xl border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Nahrát znovu
+            {recordAgainLabel}
           </button>
         ) : null}
       </div>
@@ -275,6 +277,7 @@ export function VoiceInput({ hasError = false, isProcessing = false, onReset, on
     mode === "error" && !transcriptText
       ? fallbackMessage
       : "Text můžete před zpracováním upravit.";
+  const recordAgainLabel = mode === "error" && !transcriptText ? "Zkusit hlas znovu" : "Nahrát znovu";
 
   if (shouldShowReview) {
     return (
@@ -289,6 +292,7 @@ export function VoiceInput({ hasError = false, isProcessing = false, onReset, on
           setValidationError(null);
         }}
         placeholder="Např. Chybí mi mléko, vajíčka, banány a něco rychlého k večeři."
+        recordAgainLabel={recordAgainLabel}
         showRecordAgain={isSupported !== false}
         statusState={visibleState}
         text={transcriptText}
@@ -298,12 +302,12 @@ export function VoiceInput({ hasError = false, isProcessing = false, onReset, on
   }
 
   return (
-    <div className="mx-auto flex min-h-[21rem] w-full max-w-xl flex-col items-center justify-center text-center transition sm:min-h-[22rem]">
+    <div className="mx-auto flex min-h-[18.75rem] w-full max-w-xl flex-col items-center justify-center text-center transition sm:min-h-[22rem]">
       <button
         type="button"
         onClick={handleStartRecording}
         disabled={isProcessing}
-        className={`relative isolate flex h-48 w-48 items-center justify-center rounded-full border text-white shadow-[0_22px_70px_rgba(22,163,74,0.28)] transition focus:outline-none focus:ring-4 focus:ring-emerald-200 disabled:cursor-not-allowed sm:h-56 sm:w-56 lg:h-72 lg:w-72 ${
+        className={`relative isolate flex h-44 w-44 items-center justify-center rounded-full border text-white shadow-[0_22px_70px_rgba(22,163,74,0.28)] transition focus:outline-none focus:ring-4 focus:ring-emerald-200 disabled:cursor-not-allowed sm:h-56 sm:w-56 lg:h-72 lg:w-72 ${
           visibleState === "recording"
             ? "animate-pulse border-rose-500 bg-rose-600 shadow-[0_22px_70px_rgba(225,29,72,0.25)]"
             : "border-emerald-600 bg-emerald-600 hover:bg-emerald-700"
@@ -328,7 +332,7 @@ export function VoiceInput({ hasError = false, isProcessing = false, onReset, on
         <button
           type="button"
           onClick={handleStopRecording}
-          className="mt-3 rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-semibold text-rose-800 transition hover:bg-rose-100"
+          className="mt-3 min-h-11 rounded-full border border-rose-200 bg-rose-50 px-5 py-2.5 text-xs font-semibold text-rose-800 transition hover:bg-rose-100"
         >
           Zastavit nahrávání
         </button>
